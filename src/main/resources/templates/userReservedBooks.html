@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <p th:text="${readerName} + ' has reserved the following books:'"></p>
+    <ul>
+        <form action="/deleteBook" method="DELETE">
+            <li th:each="b:${books}" th:text="${b.getTitle()} +' '+ ${b.getAverageRating()}">
+            </li>
+            <input type="hidden" th:each="b:${books}" th:name="${b.title}">
+            <button th:each="b:${books}" type="submit">Delete book</button>
+        </form>
+
+    </ul>
+    <p th:if="${error}" th:text="${error}"></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Form</title>
+</head>
+<body>
+<form method="post" th:action="@{${book != null} ? '/books/edit/' + ${book.id} : '/books/add'}">
+    <div>
+        <label for="name">Book Name</label>
+        <input type="text"
+               id="name"
+               name="title"
+               th:value="${book != null ? book.title : ''}"
+               required>
+    </div>
+
+    <div>
+        <label for="description">Book Genre</label>
+        <input type="text"
+               id="description"
+               name="genre"
+               th:value="${book != null ? book.genre : ''}"
+               required>
+    </div>
+    <div>
+        <label for="description">Book Average Rating</label>
+        <input type="text"
+               id="averageRating"
+               name="averageRating"
+               th:value="${book != null ? book.averageRating : ''}"
+               required>
+    </div>
+    <div>
+        <select id="author" name="authorId" required>
+            <option th:each="a:${authors}"
+            th:value="${a.getId()}"
+            th:text="${a.name} + ' ' + ${a.surname}"
+            th:selected="${book!=null && book.getAuthor()==a}">
+            </option>
+
+        </select>
+    </div>
+
+    <button id="submit" type="submit">Submit</button> <br>
+    <a id="back" href="/books" type="button" class="btn btn-primary">Back to Books</a>
+</form>
+
+</body>
+</html>

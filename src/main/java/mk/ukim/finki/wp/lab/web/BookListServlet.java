@@ -13,8 +13,9 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @WebServlet(name = "BookListServlet",urlPatterns = "/*")
 public class BookListServlet extends HttpServlet {
@@ -24,6 +25,17 @@ public class BookListServlet extends HttpServlet {
         this.springTemplateEngine = springTemplateEngine;
         this.bookService = bookService;
     }
+    public String findMaxCopiesBook(HashMap<String,Integer> map){
+        AtomicReference<Integer> maxCopies = new AtomicReference<>(0);
+        AtomicReference<String> maxVisitsBook= new AtomicReference<>("");
+        map.keySet().forEach(key->{
+            if(map.get(key)> maxCopies.get()){
+                maxCopies.set(map.get(key));
+                maxVisitsBook.set(key);
+            }
+        });
+        return maxVisitsBook.get();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,9 +43,12 @@ public class BookListServlet extends HttpServlet {
                 .buildApplication(getServletContext())
                 .buildExchange(req, resp);
 
+        HashMap<String,Integer> map = (HashMap<String, Integer>) req.getServletContext().getAttribute("map");
+        String maxCopiesBook = findMaxCopiesBook(map);
         WebContext context = new WebContext(webExchange);
         context.setVariable("books",bookService.listAll());
         context.setVariable("ipAddress", req.getRemoteAddr());
+        context.setVariable("maxCopiesBook",maxCopiesBook);
         List<Book> searchedBooks = (List<Book>) req.getSession().getAttribute("searchedBooks");
         req.getSession().removeAttribute("searchedBooks");
         context.setVariable("searchedBooks",searchedBooks);
