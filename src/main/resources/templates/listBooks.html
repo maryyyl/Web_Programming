@@ -61,7 +61,7 @@
 <!--  </form>-->
 <p><a href="/books/add-form">Add book</a></p>
   <h2>Search books:</h2>
-  <form action="/" method="POST">
+  <form action="/searchBook" method="POST">
     <label for="search-input">Search text:</label>
     <input id="search-input" type="text" name="searchText">
     <br>
@@ -71,9 +71,7 @@
 
   </form>
 
-  <ul th:if="${searchedBooks}">
-    <li th:each="book:${searchedBooks}" th:text="${book.getTitle()}"></li>
-  </ul>
+
   <h3>The most reserved book is:</h3>
   <span  style="margin-bottom: 20px;display: block" th:text="${maxCopiesBook}"></span>
 </main>

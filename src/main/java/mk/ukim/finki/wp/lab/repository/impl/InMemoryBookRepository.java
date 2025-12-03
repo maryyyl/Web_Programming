@@ -1,49 +1,41 @@
-package mk.ukim.finki.wp.lab.service.impl;
+package mk.ukim.finki.wp.lab.repository.impl;
 
+import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
-import mk.ukim.finki.wp.lab.repository.AuthorRepository;
 import mk.ukim.finki.wp.lab.repository.BookRepository;
-import mk.ukim.finki.wp.lab.service.BookService;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Service
-public class BookServiceImpl implements BookService {
-    private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
+import java.util.Objects;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository) {
+@Repository
+public class InMemoryBookRepository  {
+    private final DataHolder dataHolder;
+    private final BookRepository bookRepository;
+
+    public InMemoryBookRepository(DataHolder dataHolder, BookRepository bookRepository) {
+        this.dataHolder = dataHolder;
         this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
     }
-    @Override
-    public List<Book> listAll() {
+
+    public List<Book> findAll() {
         return bookRepository.findAll();
     }
 
-    @Override
     public List<Book> searchBooks(String text, Double rating) {
         return bookRepository.searchBooksByTitleContainingIgnoreCaseAndAverageRatingGreaterThan(text, rating);
     }
 
-    @Override
     public void createBook(String title, String genre, double averageRating, Author author) {
         bookRepository.save(new Book(title, genre, averageRating, author));
     }
-    public void updateBook(Book book){
-        bookRepository.save(book);
-    }
 
-    @Override
+
     public Book findById(Long id) {
         return bookRepository.findById(id).orElse(null);
     }
-
-    @Override
     public void remove(Long id) {
-    bookRepository.deleteById(id);
+        bookRepository.deleteById(id);
     }
-
-
 }

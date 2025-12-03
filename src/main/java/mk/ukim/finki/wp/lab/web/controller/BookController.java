@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("")
 public class BookController {
@@ -26,6 +28,16 @@ public class BookController {
            model.addAttribute("books",bookService.listAll());
         }
         return "listBooks";
+    }
+    @PostMapping("searchBook")
+    public String searchBooksPage(@RequestParam(required = false) String error,@RequestParam(required = false) String searchText,
+            @RequestParam (required = false) Double ratingValue, Model model){
+        List<Book> searchedBooks = bookService.searchBooks(searchText,ratingValue);
+        System.out.println(searchText);
+        System.out.println(ratingValue);
+        System.out.println(searchedBooks!=null?"True":"False");
+        model.addAttribute("searchedBooks", searchedBooks);
+        return "/searchResults";
     }
     @GetMapping("books/add-form")
     public String addBookForm(Model model){
@@ -57,6 +69,7 @@ public class BookController {
         book.setGenre(genre);
         book.setAverageRating(averageRating);
         book.setAuthor(authorService.findById(authorId));
+        bookService.updateBook(book);
         return "redirect:/books";
     }
     @GetMapping("/books/delete/{id}")
