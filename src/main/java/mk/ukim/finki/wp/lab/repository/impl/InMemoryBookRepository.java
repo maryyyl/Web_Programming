@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.repository.impl;
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
+import mk.ukim.finki.wp.lab.model.enums.Genre;
 import mk.ukim.finki.wp.lab.repository.BookRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,7 @@ public class InMemoryBookRepository  {
         return bookRepository.searchBooksByTitleContainingIgnoreCaseAndAverageRatingGreaterThan(text, rating);
     }
 
-    public void createBook(String title, String genre, double averageRating, Author author) {
+    public void createBook(String title, Genre genre, double averageRating, Author author) {
         bookRepository.save(new Book(title, genre, averageRating, author));
     }
 

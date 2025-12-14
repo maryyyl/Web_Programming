@@ -1,11 +1,14 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Book;
+import mk.ukim.finki.wp.lab.model.enums.Genre;
 import mk.ukim.finki.wp.lab.service.AuthorService;
 import mk.ukim.finki.wp.lab.service.BookService;
+import org.springframework.cglib.proxy.Dispatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -30,18 +33,19 @@ public class BookController {
         return "listBooks";
     }
     @PostMapping("searchBook")
-    public String searchBooksPage(@RequestParam(required = false) String error,@RequestParam(required = false) String searchText,
-            @RequestParam (required = false) Double ratingValue, Model model){
+    public String searchBooksPage(@RequestParam(required = false) String error, @RequestParam String searchText,
+                                  @RequestParam  Double ratingValue, RedirectAttributes redirectAttributes, Model model){
         List<Book> searchedBooks = bookService.searchBooks(searchText,ratingValue);
         System.out.println(searchText);
         System.out.println(ratingValue);
         System.out.println(searchedBooks!=null?"True":"False");
-        model.addAttribute("searchedBooks", searchedBooks);
-        return "/searchResults";
+        redirectAttributes.addFlashAttribute("searchedBooks", searchedBooks);
+        return "redirect:/books";
     }
     @GetMapping("books/add-form")
     public String addBookForm(Model model){
         model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", Genre.values());
         return ("book-form");
     }
     @GetMapping("books/edit/{id}")
@@ -52,16 +56,16 @@ public class BookController {
     }
     @PostMapping("books/add")
     public String saveBook(@RequestParam String title,
-                           @RequestParam String genre,
+                           @RequestParam Genre genre,
                            @RequestParam Double averageRating,
                            @RequestParam Long authorId){
-        bookService.createBook(title,genre,averageRating,authorService.findById(authorId));
+        bookService.createBook(title, (genre),averageRating,authorService.findById(authorId));
         return "redirect:/books";
     }
     @PostMapping("/books/edit/{bookId}")
     public String editBook(@PathVariable Long bookId,
                            @RequestParam String title,
-                           @RequestParam String genre,
+                           @RequestParam Genre genre,
                            @RequestParam Double averageRating,
                            @RequestParam Long authorId){
         Book book = bookService.findById(bookId);

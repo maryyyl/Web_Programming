@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.model.BookReservation;
+import mk.ukim.finki.wp.lab.model.enums.Genre;
 import mk.ukim.finki.wp.lab.repository.AuthorRepository;
 import mk.ukim.finki.wp.lab.repository.BookRepository;
 import org.springframework.stereotype.Component;
@@ -34,16 +35,16 @@ public class DataHolder {
             authors=authorRepository.findAll();
         }
         if(bookRepository.findAll().isEmpty()) {
-            books.add(new Book("The Nightingale", "Historical Fiction", 4.64, authors.getFirst()));
-            books.add(new Book("Just Mercy", "Memoir / Social Justice", 4.62,authors.get(1)));
-            books.add(new Book("The Name of the Wind", "Fantasy", 4.52,authors.get(2)));
-            books.add(new Book("Calvin and Hobbes", "Comic / Humor", 4.61,authors.get(2)));
-            books.add(new Book("The Way of Kings", "Fantasy", 4.66,authors.getLast()));
-            books.add(new Book("A Voice in the Wind", "Historical Fiction", 4.57,authors.getLast()));
-            books.add(new Book("The Book Thief", "Historical Fiction", 4.37,authors.getFirst()));
-            books.add(new Book("Where the Crawdads Sing", "Mystery / Drama", 4.47,authors.get(1)));
-            books.add(new Book("Educated", "Memoir", 4.47,authors.get(2)));
-            books.add(new Book("The Silent Patient", "Psychological Thriller", 4.24,authors.getLast()));
+            books.add(new Book("The Nightingale", Genre.THRILLER, 4.64, authors.getFirst()));
+            books.add(new Book("Just Mercy", Genre.THRILLER, 4.62,authors.get(1)));
+            books.add(new Book("The Name of the Wind", Genre.THRILLER, 4.52,authors.get(2)));
+            books.add(new Book("Calvin and Hobbes", Genre.ROMANCE, 4.61,authors.get(2)));
+            books.add(new Book("The Way of Kings", Genre.MYSTERY, 4.66,authors.getLast()));
+            books.add(new Book("A Voice in the Wind", Genre.MYSTERY, 4.57,authors.getLast()));
+            books.add(new Book("The Book Thief", Genre.ACTION, 4.37,authors.getFirst()));
+            books.add(new Book("Where the Crawdads Sing", Genre.MYSTERY, 4.47,authors.get(1)));
+            books.add(new Book("Educated", Genre.ACTION, 4.47,authors.get(2)));
+            books.add(new Book("The Silent Patient", Genre.THRILLER, 4.24,authors.getLast()));
             bookRepository.saveAll(books);
         }
     }

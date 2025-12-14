@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
+import mk.ukim.finki.wp.lab.model.enums.Genre;
 import mk.ukim.finki.wp.lab.repository.AuthorRepository;
 import mk.ukim.finki.wp.lab.repository.BookRepository;
 import mk.ukim.finki.wp.lab.service.BookService;
@@ -28,7 +29,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void createBook(String title, String genre, double averageRating, Author author) {
+    public void createBook(String title, Genre genre, double averageRating, Author author) {
         bookRepository.save(new Book(title, genre, averageRating, author));
     }
     public void updateBook(Book book){

@@ -15,16 +15,26 @@
                required>
     </div>
 
+<!--    <div>-->
+<!--        <label for="description">Book Genre</label>-->
+<!--        <input type="text"-->
+<!--               id="description"-->
+<!--               name="genre"-->
+<!--               th:value="${book != null ? book.genre : ''}"-->
+<!--               required>-->
+<!--    </div>-->
     <div>
-        <label for="description">Book Genre</label>
-        <input type="text"
-               id="description"
-               name="genre"
-               th:value="${book != null ? book.genre : ''}"
-               required>
+        <select id="genre" name="genre" required>
+            <option th:each="g:${genres}"
+                    th:value="${g}"
+                    th:text="${g}"
+                    th:selected="${book!=null && book.getGenre()==g}">
+            </option>
+
+        </select>
     </div>
     <div>
-        <label for="description">Book Average Rating</label>
+        <label for="averageRating">Book Average Rating</label>
         <input type="text"
                id="averageRating"
                name="averageRating"
